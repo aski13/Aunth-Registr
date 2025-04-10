@@ -1,0 +1,163 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    padding: 15px;
+    background: linear-gradient(135deg, #e0f7e0, #a5d6a7, #81c784, #66bb6a);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+/* Анимация фона */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Контейнер формы */
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.form-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Заголовки */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2e7d32;
+    font-size: 22px;
+}
+
+/* Поля ввода */
+input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+input:focus {
+    border-color: #66bb6a;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2);
+}
+
+/* Кнопки */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s;
+    max-width: 100%;
+}
+
+button:hover {
+    background-color: #1b5e20;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Ссылки переключения форм */
+.switch-form {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.switch-form a {
+    color: #2e7d32;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.switch-form a:hover {
+    color: #1b5e20;
+    text-decoration: underline;
+}
+
+/* Сообщения */
+.message {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 6px;
+    display: none;
+    text-align: center;
+    font-size: 14px;
+}
+
+.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    display: block;
+    border: 1px solid #a5d6a7;
+}
+
+.error {
+    background-color: #ffebee;
+    color: #c62828;
+    display: block;
+    border: 1px solid #ef9a9a;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 20px 15px;
+    }
+    
+    body {
+        padding: 10px;
+    }
+    
+    input, button {
+        padding: 10px 12px;
+        font-size: 15px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+}

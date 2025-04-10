@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация и регистрация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            padding: 15px;
+            background: linear-gradient(135deg, #e0f7e0, #a5d6a7, #81c784, #66bb6a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2e7d32;
+            font-size: 22px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        input:focus {
+            border-color: #66bb6a;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            max-width: 100%;
+        }
+
+        button:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .switch-form a {
+            color: #2e7d32;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .switch-form a:hover {
+            color: #1b5e20;
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+            border: 1px solid #a5d6a7;
+        }
+
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            display: block;
+            border: 1px solid #ef9a9a;
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 20px 15px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+            
+            input, button {
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <!-- Форма авторизации -->
+            <div id="login-form">
+                <h2>Вход</h2>
+                <input type="text" id="login-username" placeholder="Логин" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button id="login-button">Войти</button>
+                <div class="switch-form">
+                    Нет аккаунта? <a id="show-register">Зарегистрироваться</a>
+                </div>
+            </div>
+
+            <!-- Форма регистрации (изначально скрыта) -->
+            <div id="register-form" style="display: none;">
+                <h2>Регистрация</h2>
+                <input type="text" id="register-username" placeholder="Логин" required>
+                <input type="password" id="register-password" placeholder="Пароль" required>
+                <button id="register-button">Зарегистрироваться</button>
+                <div class="switch-form">
+                    Уже есть аккаунт? <a id="show-login">Войти</a>
+                </div>
+            </div>
+
+            <!-- Сообщения об ошибках/успехе -->
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <script>
+        // Получаем элементы DOM
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegister = document.getElementById('show-register');
+        const showLogin = document.getElementById('show-login');
+        const loginButton = document.getElementById('login-button');
+        const registerButton = document.getElementById('register-button');
+        const messageEl = document.getElementById('message');
+
+        // Показать форму регистрации
+        showRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            messageEl.style.display = 'none';
+        });
+
+        // Показать форму авторизации
+        showLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'block';
+            messageEl.style.display = 'none';
+        });
+
+        // Регистрация нового пользователя
+        registerButton.addEventListener('click', function() {
+            const username = document.getElementById('register-username').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+
+            // Проверка ввода
+            if (!username || !password) {
+                showMessage('Пожалуйста, заполните все поля', 'error');
+                return;
+            }
+
+            // Получаем пользователей из localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+
+            // Проверка на существующего пользователя
+            if (users[username]) {
+                showMessage('Пользователь с таким логином уже существует', 'error');
+                return;
+            }
+
+            // Сохраняем нового пользователя
+            users[username] = { password: password };
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Показываем сообщение об успехе
+            showMessage('Регистрация прошла успешно! Теперь вы можете войти.', 'success');
+
+            // Очищаем поля и показываем форму входа
+            document.getElementById('register-username').value = '';
+            document.getElementById('register-password').value = '';
+            setTimeout(() => {
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            }, 1500);
+        });
+
+        // Авторизация пользователя
+        loginButton.addEventListener('click', function() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+
+            // Проверка ввода
+            if (!username || !password) {
+                showMessage('Пожалуйста, заполните все поля', 'error');
+                return;
+            }
+
+            // Получаем пользователей из localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+
+            // Проверка учетных данных
+            if (!users[username] || users[username].password !== password) {
+                showMessage('Неверный логин или пароль', 'error');
+                return;
+            }
+
+            // Успешная авторизация
+            showMessage('Вход выполнен успешно!', 'success');
+
+            // Очищаем поля
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+
+            // Здесь можно перенаправить пользователя на защищенную страницу
+            // window.location.href = 'dashboard.html';
+        });
+
+        // Функция для отображения сообщений
+        function showMessage(text, type) {
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = text;
+            messageEl.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
